@@ -12,5 +12,8 @@ class StrategyConfig:
     volume_z_threshold: float = 1.5
     reward_risk: float = 1.5
     outcome_horizon: int = 20
+    transaction_cost_r: float = 0.0
+    use_trend_filter: bool = False
+    trend_ema_span: int = 100
     london_open: tuple[int, int] = (8, 10)
     new_york_open: tuple[int, int] = (13, 15)
