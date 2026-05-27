@@ -32,3 +32,14 @@ def test_pipeline_produces_consistent_summary():
     assert summary["total_events"] == len(trades)
     assert summary["decisive_events"] == summary["wins"] + summary["losses"]
     assert 0 <= summary["win_rate"] <= 1 or pd.isna(summary["win_rate"])
+    assert "net_expectancy_r" in summary
+    assert "max_drawdown_r" in summary
+
+
+def test_transaction_cost_reduces_net_pnl():
+    config = StrategyConfig(volume_z_threshold=1.0, transaction_cost_r=0.05)
+    df = simulate_ohlcv("EURUSD", periods=1500, seed=8)
+    trades = label_trades(df, detect_sweeps(df, config), config)
+    decisive = trades[trades["outcome"].isin(["win", "loss"])]
+    if not decisive.empty:
+        assert (decisive["net_pnl_r"] <= decisive["pnl_r"]).all()
