@@ -79,6 +79,7 @@ Outputs are written to:
 - `outputs/tables/events.csv`
 - `outputs/tables/trades.csv`
 - `outputs/tables/summary.csv`
+- `outputs/tables/yearly_summary.csv`
 - `outputs/figures/equity_curve.png`
 
 ## Run On Real Data
@@ -87,6 +88,20 @@ Outputs are written to:
 python scripts/run_pipeline.py --input data/raw/EURUSD_H1.csv --symbol EURUSD
 python scripts/run_pipeline.py --input data/raw/XAUUSD_H1.csv --symbol XAUUSD
 ```
+
+To include transaction costs and test the trend-regime extension:
+
+```powershell
+python scripts/run_pipeline.py --input data/raw/EURUSD_H1.csv --symbol EURUSD --transaction-cost-r 0.04 --trend-filter
+```
+
+To run a parameter sensitivity sweep:
+
+```powershell
+python scripts/sensitivity_sweep.py --input data/raw/EURUSD_H1.csv --symbol EURUSD --transaction-cost-r 0.04
+```
+
+See `docs/REPLICATION_CHECKLIST.md` for the evidence standard needed before treating the results as publication-grade.
 
 ## Core Parameters
 
@@ -100,6 +115,8 @@ python scripts/run_pipeline.py --input data/raw/XAUUSD_H1.csv --symbol XAUUSD
 | Volume Z threshold | 1.5 | 4.3 |
 | Reward-to-risk | 1.5 | 4.4 |
 | Outcome horizon | 20 candles | 4.4 |
+| Transaction cost | 0.0 R by default | 6.3 |
+| Trend filter | off by default | 9 |
 | London open window | 08:00-10:00 GMT | 3.3 |
 | New York open window | 13:00-15:00 GMT | 3.3 |
 
